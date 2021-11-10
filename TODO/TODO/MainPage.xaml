@@ -1,0 +1,54 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="TODO.MainPage"
+             xmlns:model="clr-namespace:TODO.Model;assembly=TODO"
+             xmlns:viewModel="clr-namespace:TODO.ViewModel;assembly=TODO"
+             x:DataType="viewModel:MainViewModel">
+
+    <StackLayout Padding="10" BackgroundColor="AntiqueWhite">
+        <FlexLayout JustifyContent="SpaceBetween">
+            <Frame BackgroundColor="#d9b28a" 
+                   CornerRadius="20"
+                   Padding="5, 5, 5, 5"
+                   FlexLayout.Basis="15%">
+                <Label Text="TODO" FontSize="Subtitle" TextColor="Black" VerticalOptions="Center" HorizontalOptions="Center"/>
+            </Frame>
+            <Frame Padding="5, 5, 5, 5"
+                   CornerRadius="5"
+                   BackgroundColor="Transparent"
+                   FlexLayout.Basis="70%">
+                <Entry Placeholder="Write..."
+                       FontSize="20"
+                       x:Name="Text"/>
+            </Frame>
+
+            <Button Grid.Column="1" Text="+" BackgroundColor="Salmon" FontSize="25" CornerRadius="30"
+                    Command="{Binding AddCommand}"
+                    CommandParameter="{Binding Source={x:Reference Name=Text}, Path=Text}" 
+                    Padding="0, 0, 0, 0"
+                    FlexLayout.Basis="15%"/>
+        </FlexLayout>
+
+        <ListView ItemsSource="{Binding TaskCollection}" SeparatorColor="Black">
+            <ListView.ItemTemplate>
+                <DataTemplate  x:DataType="model:Data">
+                    <ViewCell>
+                        <ViewCell.View>
+                            <Frame Margin="2" Padding="2"  HasShadow="True" BackgroundColor="Transparent">
+
+                                <Grid ColumnDefinitions="1*, 8*, 2*">
+                                    <CheckBox Color="#CD853F" />
+                                    <Label Grid.Column="1" Text="{Binding Text}" TextColor="Black" FontFamily="Arial" FontSize="20"/>
+                                    <Button Grid.Column="2" Text="X" BackgroundColor="Wheat"
+                                            Command="{Binding Source={RelativeSource AncestorType={x:Type viewModel:MainViewModel}}, Path=DeleteCommand}" CommandParameter="{Binding .}" />
+                                </Grid>
+                            </Frame>
+                        </ViewCell.View>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+
+</ContentPage>
